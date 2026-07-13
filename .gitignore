@@ -1,0 +1,36 @@
+# Dependencies
+vendor/
+composer.lock
+node_modules/
+package-lock.json
+
+# IDE
+.idea/
+.vscode/
+.zed/
+.claude/
+.cursor/
+.codex/
+.opencode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs & Reports
+*.log
+*.tmp
+tmp/
+reports/
+
+# Standards
+phpunit.xml
+phpcs.xml
+phpstan.neon
+
+# Cache
+.phpunit.cache/
+.phpunit.result.cache
+.phpstan.cache/

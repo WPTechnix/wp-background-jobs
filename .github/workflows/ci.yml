@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.gitignore'
+      - 'LICENSE'
+
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.gitignore'
+      - 'LICENSE'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  phpcs:
+    name: Coding Standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer, cs2pr
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/composer
+          key: composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHPCS
+        run: vendor/bin/phpcs -q --report=checkstyle --standard=phpcs.xml.dist | cs2pr
+
+  phpstan:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer, cs2pr
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/composer
+          key: composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress --error-format=github --configuration=phpstan.neon.dist
+
+  phpunit:
+    name: Unit Tests (PHP ${{ matrix.php-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [8.0, 8.1, 8.2, 8.3, 8.4, 8.5]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/composer
+          key: composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHPUnit
+        run: vendor/bin/phpunit --colors=always

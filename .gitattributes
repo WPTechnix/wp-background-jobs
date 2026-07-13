@@ -1,0 +1,23 @@
+# Consistent line endings
+* text=auto eol=lf
+
+*.md    text eol=lf
+*.json  text eol=lf
+*.xml   text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.neon  text eol=lf
+*.php   text eol=lf
+
+/docs/**    linguist-documentation
+
+/tests                 export-ignore
+/docs                  export-ignore
+/docker-compose.yml    export-ignore
+/Dockerfile            export-ignore
+/.git*                 export-ignore
+/.editorconfig         export-ignore
+/commitlint.config.cjs export-ignore
+/phpcs.xml.dist        export-ignore
+/phpstan.neon.dist     export-ignore
+/phpunit.xml.dist      export-ignore

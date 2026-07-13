@@ -1,0 +1,71 @@
+{
+    "name": "wptechnix/wp-background-jobs",
+    "description": "A simple, reliable, zero-dependency background job queue for WordPress. Object jobs, delays, retries with backoff, failed-jobs table, atomic reservation, async and WP-Cron and WP-CLI processing.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "wordpress",
+        "background-processing",
+        "background-jobs",
+        "queue",
+        "job-queue",
+        "async",
+        "worker",
+        "wp-cron",
+        "wp-cli",
+        "task-queue"
+    ],
+    "authors": [
+      {
+        "name": "WPTechnix",
+        "homepage": "https://github.com/wptechnix"
+      }
+    ],
+    "support": {
+      "issues": "https://github.com/wptechnix/wp-background-jobs/issues",
+      "source": "https://github.com/wptechnix/wp-background-jobs"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "brain/monkey": "^2.7",
+        "php-stubs/wp-cli-stubs": "^2.10",
+        "phpstan/phpstan": "^2.2",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^9.6",
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "wptechnix/wp-coding-standards": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WPTechnix\\WP_Background_Jobs\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WPTechnix\\WP_Background_Jobs\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml.dist || true",
+        "phpcs": "vendor/bin/phpcs -s --report=full --standard=phpcs.xml.dist",
+        "phpstan": "vendor/bin/phpstan analyse --memory-limit=2G --error-format=table --configuration=phpstan.neon.dist",
+        "test": "phpunit --colors=always",
+        "lint": [
+            "@phpcs",
+            "@phpstan"
+        ]
+    },
+    "config": {
+        "platform": {
+            "php": "8.0"
+        },
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

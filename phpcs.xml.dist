@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="WP_Background_Jobs">
+    <description>Coding standards for WP Background Jobs</description>
+
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="8"/>
+
+    <config name="testVersion" value="8.0-"/>
+    <config name="minimum_supported_wp_version" value="5.0"/>
+
+    <file>src/</file>
+
+    <rule ref="WPTechnix-PSR4" />
+    <rule ref="WPTechnix-Strict" />
+
+
+    <!-- i18n is not relevant for a library package -->
+    <rule ref="WordPress.WP.I18n">
+        <severity>0</severity>
+    </rule>
+
+</ruleset>
