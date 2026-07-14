@@ -31,7 +31,8 @@ phpcs.xml
 phpstan.neon
 
 # Cache
-.phpunit.cache/
 .phpunit.result.cache
-.phpstan.cache/
+.phpunit.cache/
+.phpunit-cache/
+.phpstan-cache/
 .opencode
