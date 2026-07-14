@@ -15,9 +15,8 @@ indent_size = 4
 max_line_length = 120
 insert_final_newline = true
 
-# Tests follow PSR-12 (four-space indent) and are not linted by PHPCS.
 [tests/**.php]
-indent_style = space
+indent_style = tab
 indent_size = 4
 
 # YAML (e.g., PHPStan, ECS)

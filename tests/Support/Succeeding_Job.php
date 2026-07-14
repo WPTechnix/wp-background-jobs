@@ -11,17 +11,17 @@ use WPTechnix\WP_Background_Jobs\Job;
  */
 final class Succeeding_Job extends Job
 {
-    public static int $handled = 0;
+	public static int $handled = 0;
 
-    public int $value;
+	public int $value;
 
-    public function __construct(int $value = 0)
-    {
-        $this->value = $value;
-    }
+	public function __construct(int $value = 0)
+	{
+		$this->value = $value;
+	}
 
-    public function handle(): void
-    {
-        self::$handled++;
-    }
+	public function handle(): void
+	{
+		self::$handled++;
+	}
 }

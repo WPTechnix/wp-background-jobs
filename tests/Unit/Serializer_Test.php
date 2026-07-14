@@ -12,30 +12,30 @@ use WPTechnix\WP_Background_Jobs\Tests\TestCase;
 
 final class Serializer_Test extends TestCase
 {
-    public function test_round_trip_preserves_payload(): void
-    {
-        $serializer = new Serializer(true);
-        $restored = $serializer->unserialize($serializer->serialize(new Succeeding_Job(99)));
+	public function test_round_trip_preserves_payload(): void
+	{
+		$serializer = new Serializer(true);
+		$restored = $serializer->unserialize($serializer->serialize(new Succeeding_Job(99)));
 
-        $this->assertInstanceOf(Succeeding_Job::class, $restored);
-        $this->assertSame(99, $restored->value);
-    }
+		$this->assertInstanceOf(Succeeding_Job::class, $restored);
+		$this->assertSame(99, $restored->value);
+	}
 
-    public function test_empty_payload_returns_null(): void
-    {
-        $this->assertNull((new Serializer(true))->unserialize(''));
-    }
+	public function test_empty_payload_returns_null(): void
+	{
+		$this->assertNull((new Serializer(true))->unserialize(''));
+	}
 
-    public function test_non_job_payload_returns_null(): void
-    {
-        $this->assertNull((new Serializer(true))->unserialize(serialize(new stdClass())));
-    }
+	public function test_non_job_payload_returns_null(): void
+	{
+		$this->assertNull((new Serializer(true))->unserialize(serialize(new stdClass())));
+	}
 
-    public function test_disallowed_class_returns_null(): void
-    {
-        $payload = (new Serializer(true))->serialize(new Succeeding_Job(1));
-        $restricted = new Serializer([Throwing_Job::class]);
+	public function test_disallowed_class_returns_null(): void
+	{
+		$payload = (new Serializer(true))->serialize(new Succeeding_Job(1));
+		$restricted = new Serializer([Throwing_Job::class]);
 
-        $this->assertNull($restricted->unserialize($payload));
-    }
+		$this->assertNull($restricted->unserialize($payload));
+	}
 }
