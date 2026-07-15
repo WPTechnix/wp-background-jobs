@@ -1,5 +1,8 @@
 parameters:
-    phpVersion: 80000
+    phpVersion:
+        min: 80000
+        max: 80500
+
     level: 8
     tmpDir: .phpstan-cache
     paths:
