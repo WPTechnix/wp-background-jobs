@@ -4,7 +4,7 @@ parameters:
         max: 80500
 
     level: 8
-    tmpDir: .phpstan-cache
+    tmpDir: .phpstan.cache
     paths:
         - src/
 
