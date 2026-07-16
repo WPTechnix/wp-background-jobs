@@ -1,0 +1,48 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "timezone": "UTC",
+  "schedule": ["before 09:00 on monday"],
+  "labels": ["dependencies"],
+  "prConcurrentLimit": 5,
+  "semanticCommits": "enabled",
+  "rangeStrategy": "replace",
+  "packageRules": [
+    {
+      "description": "No runtime package dependencies — only the PHP platform constraint lives in `require`; changing it is a deliberate support-matrix decision, so review by hand.",
+      "matchDepTypes": ["require"],
+      "matchDepNames": ["php"],
+      "semanticCommitType": "build",
+      "automerge": false
+    },
+    {
+      "description": "Every real dependency here is dev-only tooling and never ships to consumers: automerge minor & patch once CI (PHPUnit + PHPStan + PHPCS) is green.",
+      "matchDepTypes": ["require-dev"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "semanticCommitType": "build",
+      "automerge": true
+    },
+    {
+      "description": "GitHub Actions: group into one PR, pin to commit SHAs, and automerge minor/patch/digest.",
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions",
+      "semanticCommitType": "ci",
+      "addLabels": ["ci"]
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "automerge": true
+    },
+    {
+      "description": "Major bumps always need a human — never automerge, and flag them.",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "addLabels": ["major-update"]
+    }
+  ]
+}
