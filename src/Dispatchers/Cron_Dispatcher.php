@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace WPTechnix\WP_Background_Jobs\Dispatchers;
 
+use Override;
 use WPTechnix\WP_Background_Jobs\Contracts\Dispatcher_Interface;
 use WPTechnix\WP_Background_Jobs\Contracts\Queue_Interface;
 use WPTechnix\WP_Background_Jobs\Support\Config;
@@ -30,15 +31,11 @@ final class Cron_Dispatcher implements Dispatcher_Interface {
 
 	/**
 	 * The cron event hook name.
-	 *
-	 * @var string
 	 */
 	private string $hook;
 
 	/**
 	 * The custom cron schedule name.
-	 *
-	 * @var string
 	 */
 	private string $schedule_name;
 
@@ -60,20 +57,16 @@ final class Cron_Dispatcher implements Dispatcher_Interface {
 		$this->schedule_name = $config->get_key() . '_cron_interval';
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function schedule(): void {
 		add_filter( 'cron_schedules', [ $this, 'register_schedule' ] );
 		add_action( $this->hook, [ $this, 'run_worker' ] );
 		$this->ensure_event();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string $queue The queue that received new work.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function dispatch( string $queue ): void {
 		unset( $queue );
 		$this->ensure_event();

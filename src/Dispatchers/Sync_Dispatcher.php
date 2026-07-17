@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace WPTechnix\WP_Background_Jobs\Dispatchers;
 
+use Override;
 use WPTechnix\WP_Background_Jobs\Contracts\Dispatcher_Interface;
 use WPTechnix\WP_Background_Jobs\Worker;
 
@@ -27,18 +28,14 @@ final class Sync_Dispatcher implements Dispatcher_Interface {
 	public function __construct( private Worker $worker ) {
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function schedule(): void {
 		// Nothing to schedule: the synchronous dispatcher runs jobs inline.
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string $queue The queue that received new work.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function dispatch( string $queue ): void {
 		$this->worker->run( '' === $queue ? null : $queue );
 	}

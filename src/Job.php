@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace WPTechnix\WP_Background_Jobs;
 
+use Override;
 use WPTechnix\WP_Background_Jobs\Contracts\Job_Interface;
 
 /**
@@ -25,38 +26,25 @@ abstract class Job implements Job_Interface {
 
 	/**
 	 * The database identifier once the job is persisted.
-	 *
-	 * @var int|null
 	 */
 	protected ?int $id = null;
 
 	/**
 	 * How many times this job has been attempted.
-	 *
-	 * @var int
 	 */
 	protected int $attempts = 0;
 
 	/**
 	 * The queue this job is routed to, when set explicitly.
-	 *
-	 * @var string|null
 	 */
 	protected ?string $queue = null;
 
-	/**
-	 * Performs the work for this job.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	abstract public function handle(): void;
 
-	/**
-	 * Returns the name of the queue this job belongs to.
-	 *
-	 * Defaults to the queue set via {@see Job::on_queue()}, or `default`. Override
-	 * this method to hard code a queue for a specific job type.
-	 *
-	 * @return string The queue name.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function get_queue(): string {
 		return $this->queue ?? 'default';
 	}
@@ -74,64 +62,38 @@ abstract class Job implements Job_Interface {
 		return $this;
 	}
 
-	/**
-	 * Returns the maximum number of attempts for this job.
-	 *
-	 * Override to change how many times this specific job is retried. Returning
-	 * 0 (the default) inherits the manager wide setting.
-	 *
-	 * @return int The maximum attempts, or 0 to inherit the configured default.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function get_max_attempts(): int {
 		return 0;
 	}
 
-	/**
-	 * Returns the delay in seconds before the next retry.
-	 *
-	 * Override to implement a custom backoff. Returning a negative number (the
-	 * default) inherits the manager wide backoff formula.
-	 *
-	 * @param int $attempt The attempt number that has just failed (1 based).
-	 *
-	 * @return int The seconds to wait, or a negative number to inherit the default.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function get_backoff( int $attempt ): int {
 		return -1;
 	}
 
-	/**
-	 * Returns the database identifier of this job, if persisted.
-	 *
-	 * @return int|null The row id, or null when not yet stored.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function get_id(): ?int {
 		return $this->id;
 	}
 
-	/**
-	 * Assigns the database identifier to this job.
-	 *
-	 * @param int $id The row id.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function set_id( int $id ): void {
 		$this->id = $id;
 	}
 
-	/**
-	 * Returns how many times this job has been attempted.
-	 *
-	 * @return int The attempt count.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function get_attempts(): int {
 		return $this->attempts;
 	}
 
-	/**
-	 * Sets how many times this job has been attempted.
-	 *
-	 * @param int $attempts The attempt count.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function set_attempts( int $attempts ): void {
 		$this->attempts = $attempts;
 	}

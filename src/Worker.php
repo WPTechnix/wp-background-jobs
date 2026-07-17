@@ -37,22 +37,16 @@ final class Worker {
 
 	/**
 	 * The queue to process.
-	 *
-	 * @var Queue_Interface
 	 */
 	private Queue_Interface $queue;
 
 	/**
 	 * Manager configuration.
-	 *
-	 * @var Config
 	 */
 	private Config $config;
 
 	/**
 	 * Unix timestamp when the current run started.
-	 *
-	 * @var int
 	 */
 	private int $start_time = 0;
 

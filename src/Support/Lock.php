@@ -23,15 +23,11 @@ final class Lock {
 
 	/**
 	 * The transient name backing this lock.
-	 *
-	 * @var string
 	 */
 	private string $name;
 
 	/**
 	 * How long, in seconds, the lock is held before it auto expires.
-	 *
-	 * @var int
 	 */
 	private int $ttl;
 

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Docblock hygiene.** Stripped redundant `@var` annotations from natively-typed
+  properties. Normalised `{@inheritDoc}` usage across all interface implementations
+  and replaced docblocks that merely duplicated an inherited contract with
+  `@inheritDoc`. Added missing `@inheritDoc` to test-double methods.
+- **Override attribute.** Annotated every interface implementation and abstract
+  override with `#[Override]`. The attribute is silently ignored below PHP 8.3
+  and becomes a compile-time check when the engine supports it.
+
 ## [1.0.0] - 2026-07-12
 
 Initial release: a zero-dependency, database-backed background job queue for

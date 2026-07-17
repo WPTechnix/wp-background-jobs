@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace WPTechnix\WP_Background_Jobs\Dispatchers;
 
+use Override;
 use WPTechnix\WP_Background_Jobs\Contracts\Dispatcher_Interface;
 use WPTechnix\WP_Background_Jobs\Contracts\Queue_Interface;
 use WPTechnix\WP_Background_Jobs\Support\Config;
@@ -26,8 +27,6 @@ final class Async_Dispatcher implements Dispatcher_Interface {
 
 	/**
 	 * Whether the shutdown kick has already been registered this request.
-	 *
-	 * @var bool
 	 */
 	private bool $kick_registered = false;
 
@@ -47,20 +46,16 @@ final class Async_Dispatcher implements Dispatcher_Interface {
 	) {
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function schedule(): void {
 		$action = $this->get_action();
 		add_action( 'wp_ajax_' . $action, [ $this, 'handle_request' ] );
 		add_action( 'wp_ajax_nopriv_' . $action, [ $this, 'handle_request' ] );
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string $queue The queue that received new work.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function dispatch( string $queue ): void {
 		unset( $queue );
 

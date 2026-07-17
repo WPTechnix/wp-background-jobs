@@ -32,8 +32,6 @@ final class Scheduler {
 
 	/**
 	 * Manager configuration.
-	 *
-	 * @var Config
 	 */
 	private Config $config;
 
@@ -46,8 +44,6 @@ final class Scheduler {
 
 	/**
 	 * Whether the cron_schedules filter has been registered this request.
-	 *
-	 * @var bool
 	 */
 	private bool $schedules_hooked = false;
 

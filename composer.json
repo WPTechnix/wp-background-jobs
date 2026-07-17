@@ -37,7 +37,7 @@
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^9.6",
         "szepeviktor/phpstan-wordpress": "^2.0",
-        "wptechnix/wp-coding-standards": "^1.0"
+        "wptechnix/wp-coding-standards": "^1.1.0"
     },
     "autoload": {
         "psr-4": {
