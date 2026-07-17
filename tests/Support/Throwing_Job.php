@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WPTechnix\WP_Background_Jobs\Tests\Support;
 
+use Override;
 use RuntimeException;
 use WPTechnix\WP_Background_Jobs\Job;
 
@@ -22,16 +23,22 @@ final class Throwing_Job extends Job
 		$this->backoff = $backoff;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function handle(): void
 	{
 		throw new RuntimeException('boom');
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function get_max_attempts(): int
 	{
 		return $this->max_attempts;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function get_backoff(int $attempt): int
 	{
 		return $this->backoff;

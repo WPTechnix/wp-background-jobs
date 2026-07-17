@@ -26,15 +26,11 @@ final class Worker_Command {
 
 	/**
 	 * The worker used to process jobs.
-	 *
-	 * @var Worker
 	 */
 	private Worker $worker;
 
 	/**
 	 * The queue, used for counts and maintenance.
-	 *
-	 * @var Queue
 	 */
 	private Queue $queue;
 
@@ -68,11 +64,8 @@ final class Worker_Command {
 	 * [--queue=<queue>]
 	 * : Only process the named queue. Defaults to all queues.
 	 *
-	 * @param array $args       Positional arguments (unused).
-	 * @param array $assoc_args Associative arguments.
-	 *
-	 * @phpstan-param array<int, string>    $args
-	 * @phpstan-param array<string, string> $assoc_args
+	 * @param array<int, string>   $args       Positional arguments (unused).
+	 * @param array<string,string> $assoc_args Associative arguments.
 	 */
 	public function work( array $args, array $assoc_args ): void {
 		unset( $args );
@@ -115,11 +108,8 @@ final class Worker_Command {
 	 * [--failed]
 	 * : Clear the failures table instead of pending jobs.
 	 *
-	 * @param array $args       Positional arguments (unused).
-	 * @param array $assoc_args Associative arguments.
-	 *
-	 * @phpstan-param array<int, string>    $args
-	 * @phpstan-param array<string, string> $assoc_args
+	 * @param array<int, string>   $args       Positional arguments (unused).
+	 * @param array<string,string> $assoc_args Associative arguments.
 	 */
 	public function flush( array $args, array $assoc_args ): void {
 		unset( $args );
@@ -144,11 +134,8 @@ final class Worker_Command {
 	 * [--queue=<queue>]
 	 * : Only retry the named queue. Defaults to all queues.
 	 *
-	 * @param array $args       Positional arguments (unused).
-	 * @param array $assoc_args Associative arguments.
-	 *
-	 * @phpstan-param array<int, string>    $args
-	 * @phpstan-param array<string, string> $assoc_args
+	 * @param array<int, string>   $args       Positional arguments (unused).
+	 * @param array<string,string> $assoc_args Associative arguments.
 	 */
 	public function retry( array $args, array $assoc_args ): void {
 		unset( $args );
@@ -170,11 +157,8 @@ final class Worker_Command {
 	 * [--limit=<limit>]
 	 * : Maximum number of failures to show. Defaults to 50.
 	 *
-	 * @param array $args       Positional arguments (unused).
-	 * @param array $assoc_args Associative arguments.
-	 *
-	 * @phpstan-param array<int, string>    $args
-	 * @phpstan-param array<string, string> $assoc_args
+	 * @param array<int, string>    $args       Positional arguments (unused).
+	 * @param array<string, string> $assoc_args Associative arguments.
 	 */
 	public function failed( array $args, array $assoc_args ): void {
 		unset( $args );

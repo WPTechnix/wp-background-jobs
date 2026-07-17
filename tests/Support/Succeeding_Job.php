@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WPTechnix\WP_Background_Jobs\Tests\Support;
 
+use Override;
 use WPTechnix\WP_Background_Jobs\Job;
 
 /**
@@ -20,6 +21,8 @@ final class Succeeding_Job extends Job
 		$this->value = $value;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function handle(): void
 	{
 		self::$handled++;

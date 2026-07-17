@@ -36,29 +36,21 @@ final class Background_Jobs {
 
 	/**
 	 * Manager configuration.
-	 *
-	 * @var Config
 	 */
 	private Config $config;
 
 	/**
 	 * The database backed queue.
-	 *
-	 * @var Queue
 	 */
 	private Queue $queue;
 
 	/**
 	 * The job worker.
-	 *
-	 * @var Worker
 	 */
 	private Worker $worker;
 
 	/**
 	 * The schema installer.
-	 *
-	 * @var Installer
 	 */
 	private Installer $installer;
 
@@ -71,15 +63,11 @@ final class Background_Jobs {
 
 	/**
 	 * The recurring task scheduler.
-	 *
-	 * @var Scheduler
 	 */
 	private Scheduler $scheduler;
 
 	/**
 	 * Whether {@see Background_Jobs::boot()} has already run.
-	 *
-	 * @var bool
 	 */
 	private bool $booted = false;
 

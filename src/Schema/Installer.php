@@ -27,29 +27,21 @@ final class Installer {
 
 	/**
 	 * WordPress database object.
-	 *
-	 * @var wpdb
 	 */
 	private wpdb $wpdb;
 
 	/**
 	 * Full name of the jobs table.
-	 *
-	 * @var string
 	 */
 	private string $jobs_table;
 
 	/**
 	 * Full name of the failures table.
-	 *
-	 * @var string
 	 */
 	private string $failures_table;
 
 	/**
 	 * Option name holding the installed schema version.
-	 *
-	 * @var string
 	 */
 	private string $version_option;
 

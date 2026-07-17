@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WPTechnix\WP_Background_Jobs\Tests\Support;
 
+use Override;
 use Throwable;
 use WPTechnix\WP_Background_Jobs\Contracts\Job_Interface;
 use WPTechnix\WP_Background_Jobs\Contracts\Queue_Interface;
@@ -51,6 +52,8 @@ class Fake_Queue implements Queue_Interface
 
 	private int $next_id = 1;
 
+	/** @inheritDoc */
+	#[Override]
 	public function push(Job_Interface $job, int $delay = 0): int|false
 	{
 		$id = $this->next_id++;
@@ -73,6 +76,8 @@ class Fake_Queue implements Queue_Interface
 		return $id;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function push_many(array $jobs, int $delay = 0): int
 	{
 		$count = 0;
@@ -85,6 +90,8 @@ class Fake_Queue implements Queue_Interface
 		return $count;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function pop(?string $queue = null): ?Job_Interface
 	{
 		$now = time();
@@ -107,6 +114,8 @@ class Fake_Queue implements Queue_Interface
 		return null;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function delete(Job_Interface $job): bool
 	{
 		$id = $job->get_id();
@@ -119,6 +128,8 @@ class Fake_Queue implements Queue_Interface
 		return true;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function release(Job_Interface $job, int $delay = 0): bool
 	{
 		$id = $job->get_id();
@@ -133,6 +144,8 @@ class Fake_Queue implements Queue_Interface
 		return true;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function reclaim(?string $queue = null): int
 	{
 		$this->reclaim_calls++;
@@ -154,6 +167,8 @@ class Fake_Queue implements Queue_Interface
 		return $count;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function fail(Job_Interface $job, Throwable $exception): bool
 	{
 		$id = $job->get_id();
@@ -166,6 +181,8 @@ class Fake_Queue implements Queue_Interface
 		return true;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function count(?string $queue = null): int
 	{
 		if (null === $queue) {
@@ -182,6 +199,8 @@ class Fake_Queue implements Queue_Interface
 		return $total;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function count_available(?string $queue = null): int
 	{
 		$now = time();
@@ -199,11 +218,15 @@ class Fake_Queue implements Queue_Interface
 		return $total;
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function is_empty(?string $queue = null): bool
 	{
 		return 0 === $this->count($queue);
 	}
 
+	/** @inheritDoc */
+	#[Override]
 	public function purge(?string $queue = null): int
 	{
 		if (null === $queue) {

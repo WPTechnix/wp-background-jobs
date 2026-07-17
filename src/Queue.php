@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace WPTechnix\WP_Background_Jobs;
 
 use InvalidArgumentException;
+use Override;
 use stdClass;
 use Throwable;
 use wpdb;
@@ -43,43 +44,31 @@ final class Queue implements Queue_Interface {
 
 	/**
 	 * WordPress database object.
-	 *
-	 * @var wpdb
 	 */
 	private wpdb $wpdb;
 
 	/**
 	 * Full name of the jobs table.
-	 *
-	 * @var string
 	 */
 	private string $jobs_table;
 
 	/**
 	 * Full name of the failures table.
-	 *
-	 * @var string
 	 */
 	private string $failures_table;
 
 	/**
 	 * Serializer used to store and restore jobs.
-	 *
-	 * @var Serializer
 	 */
 	private Serializer $serializer;
 
 	/**
 	 * Seconds after which a reservation is considered stale and reclaimed.
-	 *
-	 * @var int
 	 */
 	private int $reserve_timeout;
 
 	/**
 	 * Unix timestamp of the most recent stale-reservation reclaim.
-	 *
-	 * @var int
 	 */
 	private int $last_reclaim_at = 0;
 
@@ -109,14 +98,8 @@ final class Queue implements Queue_Interface {
 		$this->reserve_timeout = $reserve_timeout;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param Job_Interface $job   The job to enqueue.
-	 * @param int           $delay Seconds to wait before the job becomes available.
-	 *
-	 * @return int|false The new job id, or false on failure.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function push( Job_Interface $job, int $delay = 0 ): int|false {
 		$result = $this->wpdb->insert(
 			$this->jobs_table,
@@ -140,14 +123,8 @@ final class Queue implements Queue_Interface {
 		return $id;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param array<int, Job_Interface> $jobs  The jobs to enqueue.
-	 * @param int                       $delay Seconds to wait before the jobs become available.
-	 *
-	 * @return int The number of jobs inserted.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function push_many( array $jobs, int $delay = 0 ): int {
 		if ( [] === $jobs ) {
 			return 0;
@@ -200,13 +177,8 @@ final class Queue implements Queue_Interface {
 		return is_int( $result ) ? $result : 0;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string|null $queue The queue to pop from, or null for any queue.
-	 *
-	 * @return Job_Interface|null The reserved job, or null when none is available.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function pop( ?string $queue = null ): ?Job_Interface {
 		// Reclaiming only becomes meaningful once per reserve window, so throttle
 		// it rather than scanning the table before every single popped job.
@@ -237,13 +209,8 @@ final class Queue implements Queue_Interface {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param Job_Interface $job The job to delete.
-	 *
-	 * @return bool True on success.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function delete( Job_Interface $job ): bool {
 		$id = $job->get_id();
 		if ( null === $id ) {
@@ -253,14 +220,8 @@ final class Queue implements Queue_Interface {
 		return false !== $this->wpdb->delete( $this->jobs_table, [ 'id' => $id ], [ '%d' ] );
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param Job_Interface $job   The job to release.
-	 * @param int           $delay Seconds to wait before the job becomes available again.
-	 *
-	 * @return bool True on success.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function release( Job_Interface $job, int $delay = 0 ): bool {
 		$id = $job->get_id();
 		if ( null === $id ) {
@@ -283,14 +244,8 @@ final class Queue implements Queue_Interface {
 		return false !== $result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param Job_Interface $job       The failed job.
-	 * @param Throwable     $exception The exception that caused the failure.
-	 *
-	 * @return bool True on success.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function fail( Job_Interface $job, Throwable $exception ): bool {
 		$insert = $this->wpdb->insert(
 			$this->failures_table,
@@ -312,13 +267,8 @@ final class Queue implements Queue_Interface {
 		return true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string|null $queue The queue to count, or null for all queues.
-	 *
-	 * @return int The number of pending jobs.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function count( ?string $queue = null ): int {
 		if ( null === $queue ) {
 			// phpcs:ignore WordPress.DB.PreparedSQL
@@ -331,13 +281,8 @@ final class Queue implements Queue_Interface {
 		return (int) $total;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string|null $queue The queue to count, or null for all queues.
-	 *
-	 * @return int The number of jobs ready to run now.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function count_available( ?string $queue = null ): int {
 		$now = $this->now();
 
@@ -354,13 +299,8 @@ final class Queue implements Queue_Interface {
 		return (int) $total;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string|null $queue The queue to check, or null for all queues.
-	 *
-	 * @return bool True when the queue is empty.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function is_empty( ?string $queue = null ): bool {
 		return 0 === $this->count( $queue );
 	}
@@ -467,13 +407,8 @@ final class Queue implements Queue_Interface {
 		return is_int( $result ) ? $result : 0;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param string|null $queue The queue to purge, or null for all queues.
-	 *
-	 * @return int The number of jobs removed.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function purge( ?string $queue = null ): int {
 		if ( null === $queue ) {
 			// phpcs:ignore WordPress.DB.PreparedSQL
@@ -486,16 +421,8 @@ final class Queue implements Queue_Interface {
 		return is_int( $result ) ? $result : 0;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * Attempts are incremented at claim time, so reclaiming a stale reservation
-	 * does not reset a job's retry budget.
-	 *
-	 * @param string|null $queue The queue to reclaim, or null for all queues.
-	 *
-	 * @return int The number of reservations reclaimed.
-	 */
+	/** @inheritDoc */
+	#[Override]
 	public function reclaim( ?string $queue = null ): int {
 		$threshold = $this->now( -$this->reserve_timeout );
 
